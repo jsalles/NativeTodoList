@@ -12,21 +12,17 @@ const styles = StyleSheet.create({
 });
 
 class App extends Component {
-  static propTypes = {
-    items: PropTypes.array.isRequired,
-    dispatch: PropTypes.func.isRequired,
-  }
   constructor(props) {
     super(props);
 
     this.state = {
-      itemList: [
-        { text: 'This is the first item', isChecked: false },
-        { text: 'This is the second item', isChecked: true }
-      ]
+      itemList: [ ]
     };
 
     this.addItem = this.addItem.bind(this);
+    this.onItemCompleted = this.onItemCompleted.bind(this);
+    this.onItemRemoved = this.onItemRemoved.bind(this);
+    this.onRemoveCompleted = this.onRemoveCompleted.bind(this);
   }
   addItem(itemText) {
     var newItem = {
@@ -39,6 +35,34 @@ class App extends Component {
 
     this.setState(newState);
   }
+  onItemCompleted(index) {
+    const { itemList } = this.state;
+    itemList[index].isChecked = !itemList[index].isChecked;
+
+    this.setState(function() {
+      return {
+        itemList: itemList
+      };
+    });
+  }
+  onItemRemoved(index) {
+    const { itemList } = this.state;
+
+    this.setState(function() {
+      return {
+        itemList: itemList.filter((_, i) => i !== index)
+      };
+    });
+  }
+  onRemoveCompleted() {
+    const { itemList } = this.state;
+
+    this.setState(function() {
+      return {
+        itemList: itemList.filter((item) => item.isChecked !== true)
+      };
+    });
+  }
   render() {
     var { itemList } = this.state;
 
@@ -50,8 +74,12 @@ class App extends Component {
         />
         <List 
           itemList={itemList}
+          onItemCompleted={this.onItemCompleted}
+          onItemRemoved={this.onItemRemoved}
         />
-        <Footer />
+        <Footer 
+          onRemoveCompleted={this.onRemoveCompleted}
+        />
       </View>
     )
   }

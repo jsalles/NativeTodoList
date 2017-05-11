@@ -23,7 +23,8 @@ export default class Checkbox extends Component {
   render() {
     const { isChecked, onToggle } = this.props;
     return (
-      <TouchableOpacity>
+      <TouchableOpacity
+       onPress={onToggle}>
         <View style={styles.box}>
           { isChecked && <View style={styles.inner} />}
         </View>

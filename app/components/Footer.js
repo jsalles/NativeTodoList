@@ -12,9 +12,17 @@ const styles = StyleSheet.create({
 })
 
 export default class Footer extends Component {
+  static propTypes = {
+    onRemoveCompleted: PropTypes.func.isRequired
+  }
   render() {
+    const { onRemoveCompleted } = this.props;
+    
     return (
-      <TouchableOpacity style={styles.footer}>
+      <TouchableOpacity 
+        onPress={onRemoveCompleted}
+        style={styles.footer}
+      >
         <Text style={styles.remove}>Remove completed items</Text>
       </TouchableOpacity>
     )
